@@ -1,0 +1,1010 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Greek Flashcards</title>
+<meta name="description" content="Learn Greek with flashcards: picture cards for beginners, B1–B2 vocabulary, the Greek alphabet, quizzes and the official Greek citizenship exam (Π.Ε.Γ.Π.) questions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Noto+Serif:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ef; --surface:#fff; --text:#1d2433; --muted:#667085; --line:#e4e1d8;
+  --blue:#1f5fbf; --blue-soft:#e6eefb; --green:#1d8a5b; --green-soft:#e3f4ec;
+  --orange:#c46a12; --orange-soft:#fbeedd; --red:#c23b3b; --red-soft:#fbe5e5;
+  --shadow:0 10px 30px rgba(20,30,50,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#11151d; --surface:#1a202b; --text:#e9edf4; --muted:#9aa4b5; --line:#2a3240;
+    --blue:#6ea2ff; --blue-soft:#1d2a42; --green:#4cc38a; --green-soft:#183326;
+    --orange:#f0a050; --orange-soft:#3a2a18; --red:#ff7b7b; --red-soft:#3a1d1d;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans",system-ui,sans-serif;min-height:100vh}
+button{font:inherit;cursor:pointer;color:inherit}
+a{color:var(--blue)}
+.wrap{max-width:780px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;cursor:pointer;border:0;background:none;padding:0}
+.logo .badge{width:38px;height:38px;border-radius:10px;background:var(--blue);color:#fff;display:grid;place-items:center;font-family:"Noto Serif",serif;font-size:22px}
+nav{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+nav button{border:0;background:none;padding:7px 13px;color:var(--muted);font-weight:600;font-size:14px}
+nav button.on{background:var(--blue);color:#fff}
+h1{font-size:28px;margin:0 0 6px}
+h2{font-size:20px;margin:28px 0 12px}
+.sub{color:var(--muted);margin:0 0 22px}
+.grid{display:grid;gap:14px}
+.level{display:flex;align-items:center;gap:16px;text-align:left;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;transition:transform .15s, box-shadow .15s}
+.level:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.level.feature{border:2px solid var(--blue)}
+.ic{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:26px;flex:none}
+.green{background:var(--green-soft)} .blue{background:var(--blue-soft)} .orange{background:var(--orange-soft)}
+.level h3{margin:0 0 2px;font-size:18px}
+.level p{margin:0;color:var(--muted);font-size:14px}
+.cefr{display:inline-block;font-size:12px;font-weight:700;color:var(--blue);background:var(--blue-soft);border-radius:6px;padding:1px 7px;margin-left:6px;vertical-align:2px}
+.pct{font-weight:700;color:var(--muted);font-size:14px;white-space:nowrap}
+.bar{height:6px;background:var(--line);border-radius:6px;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green);border-radius:6px;transition:width .3s}
+.extras{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+@media (max-width:520px){.extras{grid-template-columns:1fr}}
+.back{border:0;background:none;color:var(--blue);font-weight:600;padding:0;margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-size:14px}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.tools{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.count{color:var(--muted);font-size:14px}
+.tbtn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 12px;font-size:13px}
+.scene{perspective:1200px;margin-bottom:18px}
+.card{position:relative;height:340px;transform-style:preserve-3d;transition:transform .5s;cursor:pointer}
+.card.tall{height:400px}
+.card.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:safe center;padding:48px 24px 36px;text-align:center;overflow-y:auto}
+.face.b{transform:rotateY(180deg)}
+.pic{font-size:clamp(70px,20vw,110px);line-height:1.1;margin-bottom:8px}
+.pic.num{font-family:"Noto Serif",serif;font-weight:600;color:var(--blue)}
+.word{font-family:"Noto Serif",serif;font-size:clamp(28px,7.5vw,44px);line-height:1.2;word-break:break-word}
+.qtext{font-family:"Noto Serif",serif;font-size:clamp(19px,4.6vw,25px);line-height:1.4}
+.atext{font-size:clamp(19px,4.8vw,26px);font-weight:700;line-height:1.35}
+.atext.ok{color:var(--green)} .atext.no{color:var(--red)}
+.hintline{font-size:13px;color:var(--blue);font-weight:600;margin-bottom:10px}
+.hintline span{color:var(--muted);font-weight:400}
+.en{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;line-height:1.45;max-width:560px}
+.en b{color:var(--text)}
+.translit{color:var(--muted);margin-top:8px;font-style:italic}
+.meaning{font-size:clamp(22px,6vw,32px);font-weight:700}
+.hint{position:absolute;bottom:12px;left:0;right:0;color:var(--muted);font-size:12px}
+.tag{position:absolute;top:14px;left:16px;font-size:12px;color:var(--muted)}
+.speak{position:absolute;top:10px;right:12px;border:0;background:var(--blue-soft);color:var(--blue);width:42px;height:42px;border-radius:50%;font-size:18px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.act{border:0;border-radius:14px;padding:14px;font-weight:700;font-size:16px}
+.act.again{background:var(--orange-soft);color:var(--orange)}
+.act.know{background:var(--green-soft);color:var(--green)}
+.panel{text-align:center;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:36px 20px}
+.big{font-size:52px}
+.primary{border:0;background:var(--blue);color:#fff;border-radius:12px;padding:12px 18px;font-weight:700}
+.row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.keys{color:var(--muted);font-size:12px;text-align:center;margin-top:14px}
+.info{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:18px;font-size:14px;line-height:1.55}
+.info p{margin:0 0 8px} .info p:last-child{margin:0}
+.info table{border:0;margin:8px 0}
+/* alphabet */
+.letters{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px}
+.letter{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 6px;text-align:center}
+.letter.on{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue)}
+.letter .gl{font-family:"Noto Serif",serif;font-size:30px;line-height:1.1}
+.letter small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.detail{display:flex;gap:18px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}
+.detail .gl{font-family:"Noto Serif",serif;font-size:56px;min-width:110px;text-align:center}
+.detail p{margin:4px 0}
+.detail .ex{font-size:20px}
+@media (max-width:520px){.detail{flex-direction:column;text-align:center}}
+table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+td,th{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;font-size:14px}
+th{color:var(--muted);font-weight:600}
+td.gl{font-family:"Noto Serif",serif;font-size:20px}
+tr:last-child td{border-bottom:0}
+/* quiz */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opts.one{grid-template-columns:1fr}
+@media (max-width:520px){.opts{grid-template-columns:1fr}}
+.opt{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:14px 16px;font-size:17px;font-weight:600;text-align:center;min-height:58px}
+.opt.gr{font-family:"Noto Serif",serif;font-size:19px;font-weight:600}
+.opt.right{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft);color:var(--red)}
+.opt:disabled{cursor:default}
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:44px 20px 26px;text-align:center;margin-bottom:16px;position:relative}
+.progress{height:8px;background:var(--line);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.progress i{display:block;height:100%;background:var(--blue);transition:width .3s}
+.pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:8px}
+.pick button{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:14px;text-align:left}
+.pick button.on{border-color:var(--blue);background:var(--blue-soft)}
+.pick b{display:block}
+.pick span{color:var(--muted);font-size:13px}
+.feedback{margin:0 0 8px;width:100%;text-align:center;line-height:1.5}
+.missed{text-align:left;margin-top:18px}
+.missed li{margin:8px 0;line-height:1.45}
+.note{background:var(--orange-soft);color:var(--orange);border-radius:12px;padding:10px 14px;font-size:13px;margin-bottom:14px}
+/* Greek language part */
+.lgrid{display:grid;gap:8px}
+.lrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:11px 14px}
+.lrow:hover{border-color:var(--blue)}
+.lrow .no{font-weight:700;color:var(--blue);min-width:30px}
+.lrow .tt{flex:1;line-height:1.4;min-width:0}
+.lrow small{display:block;color:var(--green);font-size:12px;font-weight:600;margin-top:2px}
+.search{width:100%;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);font:inherit;margin-bottom:12px}
+.reading{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px 22px;margin-bottom:8px;font-family:"Noto Serif",serif;font-size:17px;line-height:1.7}
+.reading h2{margin:0 0 12px;text-align:center;font-size:20px}
+.reading p{margin:0 0 12px}
+.reading .src{font-family:"Noto Sans",sans-serif;font-size:12px;color:var(--muted);font-style:italic;overflow-wrap:anywhere;margin:14px 0 0}
+@media (max-width:520px){.reading{padding:16px;font-size:16px}}
+.part{font-size:18px;margin:26px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+.instr{color:var(--muted);font-size:14px;margin:14px 0 8px;line-height:1.5}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px}
+.iq{font-size:16px;line-height:1.55;margin-bottom:10px;overflow-wrap:anywhere}
+.iq .num{color:var(--blue);margin-right:4px}
+.ibtns{display:flex;flex-wrap:wrap;gap:8px}
+.ibtns.col{flex-direction:column}
+.ib{background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:8px 14px;font-size:15px;text-align:left;min-height:42px;min-width:52px}
+.ib.right{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+.ib.wrong{border-color:var(--red);background:var(--red-soft);color:var(--red)}
+.ib:disabled{cursor:default}
+.ans{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);font:inherit;font-size:16px}
+textarea.ans{min-height:110px;resize:vertical;line-height:1.5}
+textarea.essay{min-height:200px}
+.ifb{margin-top:8px;font-size:15px;line-height:1.5}
+.ifb:empty{display:none}
+.ifb .ok{color:var(--green);font-weight:700} .ifb .no{color:var(--red);font-weight:700}
+.orig{background:var(--bg);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:15px;line-height:1.55}
+.mrow{display:flex;align-items:center;gap:8px 10px;margin:8px 0;flex-wrap:wrap}
+.mrow > span:first-child{min-width:140px}
+.mrow select{padding:7px 10px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--text);font:inherit;max-width:100%}
+.mrow select.right{border-color:var(--green)} .mrow select.wrong{border-color:var(--red)}
+.scorebar{position:sticky;top:0;z-index:2;background:var(--bg);padding:8px 0;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.scorebar b{color:var(--text)}
+.audio{width:100%;margin:4px 0 8px}
+.photos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.photos img{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block}
+@media (max-width:520px){.photos{grid-template-columns:1fr}}
+.prompt{font-family:"Noto Serif",serif;font-size:18px;line-height:1.6;text-align:left}
+.prompt p{margin:0 0 10px}
+.prompt.en{font-family:"Noto Sans",sans-serif;font-size:17px}
+.mine{font-size:12px;color:var(--muted);margin:6px 0 0}
+.pager{display:flex;justify-content:space-between;gap:8px;margin-top:20px}
+footer{color:var(--muted);font-size:12px;text-align:center;margin-top:36px;line-height:1.6}
+
+/* ===== Aegean design layer: Greek blue & white, Greek-key pattern, paper flashcards ===== */
+:root{
+  --bg:#f3f0e8; --surface:#fff; --line:#e2ddd1;
+  --blue:#0d5eaf; --blue-soft:#e4eefa; --blue-deep:#0a4a8a;
+  --card-edge:#c9d7ea; --card-frame:#dbe5f2; --card-back:#f5f9fe;
+  --shadow:0 12px 28px rgba(13,44,84,.12), 0 2px 6px rgba(13,44,84,.06);
+  --glow:radial-gradient(1200px 500px at 15% -10%, #e3edf9 0, transparent 60%);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141c; --surface:#18202c; --line:#283244;
+    --blue:#6ea8ff; --blue-soft:#1b2a42; --blue-deep:#9cc3ff;
+    --card-edge:#34465f; --card-frame:#2b3a50; --card-back:#1a2433;
+    --glow:radial-gradient(1200px 500px at 15% -10%, #16243a 0, transparent 60%);
+  }
+}
+body{background:var(--glow), var(--bg)}
+h1{font-family:"Noto Serif",serif;font-size:30px;letter-spacing:-.3px}
+.tagline{font-family:"Noto Serif",serif;color:var(--blue);font-size:17px;margin:0 0 4px}
+.logo .badge{border-radius:50%;box-shadow:0 3px 10px rgba(13,94,175,.35)}
+nav{box-shadow:0 2px 8px rgba(13,44,84,.06)}
+/* Greek-key (meander) strip */
+.meander{height:12px;margin:-8px 0 24px;background:var(--blue);opacity:.45;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='12'%3E%3Cpath d='M0 11H20M2 11V1H16V8H6V4H12' fill='none' stroke='black' stroke-width='1.6'/%3E%3C/svg%3E") repeat-x left center/20px 12px;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='12'%3E%3Cpath d='M0 11H20M2 11V1H16V8H6V4H12' fill='none' stroke='black' stroke-width='1.6'/%3E%3C/svg%3E") repeat-x left center/20px 12px}
+footer .meander{margin:0 0 16px}
+/* home tiles: coloured edge on the left */
+.level{border-radius:18px;box-shadow:0 2px 8px rgba(13,44,84,.05)}
+.level.acc-green{border-left:6px solid var(--green)}
+.level.acc-blue{border-left:6px solid var(--blue)}
+.level.acc-orange{border-left:6px solid var(--orange)}
+.level.feature{border:2px solid var(--blue);border-left-width:6px;background:linear-gradient(90deg,var(--blue-soft),var(--surface) 55%)}
+.ic{border-radius:50%}
+.bar{height:7px}
+.bar i{background:linear-gradient(90deg,var(--green),#3fb984)}
+/* deck progress */
+.deckbar{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin:-4px 0 18px}
+.deckbar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),#4a8fdc);border-radius:6px;transition:width .3s}
+/* the flashcard: border, coloured top edge, dashed inner frame, stack of cards behind */
+.scene{position:relative;z-index:0;margin:6px 6px 26px}
+.scene.s2::before,.scene.s3::before,.scene.s3::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:20px;background:var(--surface);border:2px solid var(--card-edge);box-shadow:0 4px 12px rgba(13,44,84,.08)}
+.scene.s2::before,.scene.s3::before{transform:translate(7px,9px) rotate(1.8deg)}
+.scene.s3::after{transform:translate(-6px,7px) rotate(-1.4deg)}
+.card{z-index:1}
+.face{border:2px solid var(--card-edge);border-top:8px solid var(--blue);border-radius:20px;padding:58px 28px 54px;box-shadow:var(--shadow);background:var(--surface)}
+.face::after{content:"";position:absolute;inset:8px 10px 10px;border:1.5px dashed var(--card-frame);border-radius:12px;pointer-events:none}
+.face.b{border-top-color:var(--green);background:var(--card-back)}
+/* the side facing away must not catch clicks (otherwise its hidden buttons sit over the visible ones) */
+.card.flip .face:not(.b), .card:not(.flip) .face.b{pointer-events:none}
+.card:hover .face:not(.b){border-color:var(--blue);border-top-color:var(--blue)}
+.tag{top:18px;left:20px;font-size:12px;font-weight:700;color:var(--blue);background:var(--blue-soft);padding:3px 11px;border-radius:999px}
+.face.b .tag{color:var(--green);background:var(--green-soft)}
+.speak{top:14px;right:16px;border:2px solid var(--card-edge);background:var(--surface)}
+.hint{left:50%;right:auto;bottom:16px;transform:translateX(-50%);white-space:nowrap;font-size:12px;font-weight:600;color:var(--blue);background:var(--blue-soft);padding:4px 12px;border-radius:999px}
+.hint::before{content:"↻ "}
+.word,.qtext{color:var(--text)}
+/* Not yet / Got it buttons */
+.act{display:flex;flex-direction:column;align-items:center;gap:2px;border:2px solid transparent;border-radius:16px;padding:12px 10px;transition:transform .12s, box-shadow .12s}
+.act:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(13,44,84,.10)}
+.act.again{border-color:var(--orange)}
+.act.know{border-color:var(--green)}
+.act-main{font-size:17px;font-weight:700}
+.act-sub{font-size:12px;font-weight:500;opacity:.85}
+/* chips, quiz, panels, reading texts */
+.chip{transition:border-color .12s}
+.chip:hover{border-color:var(--blue)}
+.opt{transition:border-color .12s, transform .12s}
+.opt:not(:disabled):hover{border-color:var(--blue);transform:translateY(-1px)}
+.qcard{border:2px solid var(--card-edge);border-top:8px solid var(--blue);border-radius:20px}
+.reading{border:2px solid var(--card-edge);border-top:8px solid var(--blue);border-radius:20px;box-shadow:0 2px 8px rgba(13,44,84,.05)}
+/* home: the three levels as cards side by side (stacked on phones) */
+.tiles{display:grid;gap:14px}
+@media (min-width:700px){.tiles{grid-template-columns:repeat(3,1fr)}}
+.level.tile{flex-direction:column;align-items:stretch;gap:6px;padding:14px 16px 16px;border-top-width:6px}
+.level.tile.top-green{border-top-color:var(--green)}
+.level.tile.top-blue{border-top-color:var(--blue)}
+.level.tile.top-orange{border-top-color:var(--orange)}
+.tile-top{display:flex;justify-content:space-between;align-items:center}
+.tile .ic{width:44px;height:44px;font-size:23px}
+.tile p{flex:1;line-height:1.4}
+.flag{width:30px;height:20px;border-radius:3px;display:inline-block;vertical-align:-2px;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+h1 .flag{width:36px;height:24px;margin-right:4px}
+/* a little less space on wide screens so the whole home page fits */
+@media (min-width:700px){
+  header{margin-bottom:16px}
+  .meander{margin-bottom:18px}
+  .sub{margin-bottom:16px}
+  .level.tile{padding:12px 16px 14px;gap:4px}
+  .tile .ic{width:38px;height:38px;font-size:20px}
+  .tile p{font-size:13px}
+  .level.feature{padding:14px 18px}
+  .extras .level{padding:12px 18px}
+  .extras .ic{width:44px;height:44px;font-size:22px}
+}
+.panel,.info{border-radius:20px}
+.primary{box-shadow:0 4px 12px rgba(13,94,175,.28)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <button class="logo" data-go="home"><span class="badge">Ω</span><span>Greek Flashcards</span></button>
+    <nav>
+      <button data-go="home">Cards</button>
+      <button data-go="exam">Exam</button>
+      <button data-go="alphabet">Alphabet</button>
+      <button data-go="quiz">Quiz</button>
+    </nav>
+  </header>
+  <div class="meander" aria-hidden="true"></div>
+  <main id="app"></main>
+  <footer><div class="meander" aria-hidden="true"></div>Your progress is saved in this browser. Audio uses your device's Greek voice (the listening topics use the official recordings).<br>
+    Exam cards and the Greek-language topics are based on the official question bank of the Hellenic Ministry of Interior (General Secretariat for Citizenship), November 2026 version, and its April 2026 exam paper.</footer>
+</div>
+
+<script src="data.js"></script>
+<script src="exam.js"></script>
+<script>
+const store = {
+  get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+let known = new Set(store.get("known", []));
+let reverse = store.get("reverse", false);
+let showEnglish = store.get("showEnglish", true);
+let best = store.get("best", {});
+let state = {view:"home"};
+
+const app = document.getElementById("app");
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle = a => { for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; };
+const isEmoji = p => p && !/^\d+$/.test(p);
+const picHtml = p => !p ? "" : `<div class="pic ${isEmoji(p)?"":"num"}" aria-hidden="true">${esc(p)}</div>`;
+const saveKnown = () => store.set("known", [...known]);
+
+// ---------- vocabulary data ----------
+const levelById = id => LEVELS.find(l => l.id===id);
+const toCard = (lv, cat) => c => ({id:lv.id+":"+c[1], pic:c[0], g:c[1], t:c[2], en:c[3], cat:cat.id, level:lv.id});
+const cardsOf = (lvId, catId="all") => {
+  const lv = levelById(lvId);
+  return lv.cats.filter(c => catId==="all" || c.id===catId).flatMap(cat => cat.cards.map(toCard(lv,cat)));
+};
+
+// ---------- exam data ----------
+// Turns the compact rows of exam.js into card objects.
+const examTopic = id => EXAM.find(t => t.id===id);
+function examItems(topicId){
+  const topic = examTopic(topicId);
+  const items = topic.cards.map(row => {
+    const k = row[0];
+    let it;
+    if(k==="mc") it = {kind:"mc", q:row[1], a:row[2], qe:row[3], ae:row[4], wrong:row[5]};
+    else if(k==="tf") it = {kind:"tf", q:row[1], a:row[2]?"Σωστό":"Λάθος", qe:row[3], ae:row[2]?"True":"False", ok:row[2]};
+    else if(k==="g") it = {kind:"g", group:row[1], q:row[2], a:row[3], qe:row[4], ae:row[5], hint:EXAM_GROUPS[row[1]]};
+    else it = {kind:"f", q:row[1], a:row[2], qe:row[3], ae:row[4]};
+    it.id = "exam:"+topic.id+":"+(it.group?it.group+":":"")+it.q;
+    it.topic = topic.id;
+    return it;
+  });
+  // matching / fill-in sets: the other answers of the same set become the wrong choices
+  items.filter(i => i.kind==="g").forEach(i => {
+    i.wrong = [...new Set(items.filter(o => o.group===i.group && o.a!==i.a).map(o => o.a))];
+  });
+  return items;
+}
+const allExamItems = () => EXAM.flatMap(t => examItems(t.id));
+
+// ---------- speech ----------
+let greekVoice = null;
+function loadVoices(){
+  if(!("speechSynthesis" in window)) return;
+  greekVoice = speechSynthesis.getVoices().find(v => v.lang && v.lang.toLowerCase().startsWith("el")) || null;
+}
+if("speechSynthesis" in window){ loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
+function speak(text, whole=false){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  // say only the first form ("επτά (εφτά)" -> "επτά", "ο φίλος / η φίλη" -> "ο φίλος"); whole=true reads a full text
+  const u = new SpeechSynthesisUtterance((whole ? String(text) : String(text).split(/\s[\/(]/)[0]).replace(/[…«»]/g,""));
+  u.lang = "el-GR"; u.rate = .8;
+  if(greekVoice) u.voice = greekVoice;
+  speechSynthesis.speak(u);
+}
+
+// ---------- navigation ----------
+function go(view){
+  if("speechSynthesis" in window) speechSynthesis.cancel();
+  ({home:renderHome, exam:renderExamHome, alphabet:renderAlphabet, quiz:renderQuizSetup})[view]();
+  window.scrollTo(0,0);
+}
+function setNav(view){
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.go===view));
+}
+document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+
+// ---------- home ----------
+// Windows cannot show flag emojis (it prints "GR"), so the Greek flag is drawn
+const GR_FLAG = `<svg class="flag" viewBox="0 0 27 18" aria-label="Greek flag"><rect width="27" height="18" fill="#0d5eaf"/><path d="M0 3H27M0 7H27M0 11H27M0 15H27" stroke="#fff" stroke-width="2"/><rect width="10" height="10" fill="#0d5eaf"/><path d="M0 5H10M5 0V10" stroke="#fff" stroke-width="2"/></svg>`;
+function renderHome(){
+  state = {view:"home"}; setNav("home");
+  const exAll = allExamItems(), exKnown = exAll.filter(i => known.has(i.id)).length;
+  app.innerHTML = `<p class="tagline" lang="el">Μαθαίνω ελληνικά</p><h1>Learn Greek, one card at a time</h1>
+    <p class="sub">Pick a level, flip the card, mark what you know. Cards you miss come back again.</p>
+    <div class="tiles">` + LEVELS.map(lv => {
+      const all = cardsOf(lv.id), k = all.filter(c => known.has(c.id)).length;
+      return `<button class="level tile top-${lv.tint}" data-lv="${lv.id}">
+        <span class="tile-top"><span class="ic ${lv.tint}">${lv.icon}</span><span class="pct">${k}/${all.length}</span></span>
+        <h3>${lv.name}<span class="cefr">${lv.cefr}</span></h3><p>${lv.blurb}</p>
+        <div class="bar"><i style="width:${Math.round(k/all.length*100)}%"></i></div></button>`;
+    }).join("") + `</div>
+    <div class="grid" style="margin-top:14px">
+      <button class="level feature" data-go2="exam">
+        <span class="ic blue">${GR_FLAG}</span>
+        <span style="flex:1"><h3>Citizenship exam<span class="cefr">Π.Ε.Γ.Π.</span></h3><p>The official question bank as cards: history, geography, culture, institutions, and the Greek-language part</p><div class="bar"><i style="width:${Math.round(exKnown/exAll.length*100)}%"></i></div></span>
+        <span class="pct">${exKnown}/${exAll.length}</span></button>
+    </div>
+    <div class="extras">
+      <button class="level acc-blue" data-go2="alphabet"><span class="ic blue">Αα</span><span><h3>Alphabet</h3><p>All 24 letters with sounds</p></span></button>
+      <button class="level acc-orange" data-go2="quiz"><span class="ic orange">🏆</span><span><h3>Quiz</h3><p>Test yourself in 10–20 questions</p></span></button>
+    </div>
+    <div class="row"><button class="tbtn" id="reset">Reset all progress</button></div>`;
+  app.querySelectorAll("[data-lv]").forEach(b => b.onclick = () => openDeck(b.dataset.lv));
+  app.querySelectorAll("[data-go2]").forEach(b => b.onclick = () => go(b.dataset.go2));
+  $("#reset").onclick = () => { if(confirm("Reset all progress and quiz scores?")){ known.clear(); best={}; saveKnown(); store.set("best",{}); renderHome(); } };
+}
+
+// ---------- shared deck logic ----------
+function cardKeys(e){
+  if(!state.queue || !state.queue[0]) return;
+  if(e.code==="Space"){ e.preventDefault(); flip(); }
+  else if(e.key==="ArrowLeft") again();
+  else if(e.key==="ArrowRight") know();
+}
+function flip(){
+  state.flipped = !state.flipped;
+  $("#card")?.classList.toggle("flip", state.flipped);
+  if(state.flipped && state.view==="deck" && reverse) speak(state.queue[0].g);
+}
+// "Not yet": the card comes back after at least 4 cards you have not seen yet, and never more than one
+// repeated card sits between two new ones, so at least every second card is new even if you press
+// "Not yet" every time. When no new cards are left, missed cards take turns at the back of the deck.
+function again(){
+  const c = state.queue.shift(); if(!c) return;
+  const seen = state.seen || (state.seen = new Set());
+  seen.add(c.id);
+  const q = state.queue, isNew = x => !seen.has(x.id);
+  let pos = q.length, fresh = 0;
+  for(let i = 0; i < q.length; i++){
+    if(!isNew(q[i])) continue;
+    // after the 4th new card, take the first gap between two new cards that has no repeated card yet
+    if(++fresh >= 4 && (i+1 >= q.length || isNew(q[i+1]))){ pos = i + 1; break; }
+  }
+  q.splice(pos, 0, c);
+  state.flipped = false; state.render();
+}
+function know(){
+  const c = state.queue.shift(); if(!c) return;
+  known.add(c.id); saveKnown();
+  state.flipped = false; state.render();
+}
+function wireCard(sayText){
+  $("#card").onclick = e => { if(!e.target.closest("[data-say]")) flip(); };
+  app.querySelectorAll("[data-say]").forEach(b => b.onclick = e => { e.stopPropagation(); speak(b.dataset.say || sayText); });
+  $("#again").onclick = again;
+  $("#know").onclick = know;
+}
+const deckButtons = `<div class="actions">
+    <button class="act again" id="again"><span class="act-main">↺ Not yet</span><span class="act-sub">Show it again soon</span></button>
+    <button class="act know" id="know"><span class="act-main">✓ Got it</span><span class="act-sub">Remove it from the deck</span></button></div>
+  <div class="keys">Keyboard: Space = flip · ← not yet · → got it</div>`;
+// stack of cards behind the top card, so it looks like a deck
+const stackClass = () => state.queue.length > 2 ? "s3" : state.queue.length > 1 ? "s2" : "";
+const deckBar = total => `<div class="deckbar"><i style="width:${Math.round((total-state.queue.length)/total*100)}%"></i></div>`;
+
+// ---------- vocabulary flashcards ----------
+function openDeck(lvId, catId="all"){
+  state = {view:"deck", level:lvId, cat:catId, flipped:false, render:renderDeck,
+    queue: shuffle(cardsOf(lvId,catId).filter(c => !known.has(c.id)))};
+  renderDeck();
+}
+function renderDeck(){
+  setNav("home");
+  const lv = levelById(state.level), c = state.queue[0];
+  const total = cardsOf(lv.id, state.cat).length;
+  const chips = [{id:"all",name:"All",icon:""}, ...lv.cats].map(cat =>
+    `<button class="chip ${cat.id===state.cat?"on":""}" data-c="${cat.id}">${cat.icon} ${cat.name}</button>`).join("");
+  let body;
+  if(!c){
+    body = `<div class="panel"><div class="big">🎉</div><h2>Well done!</h2><p class="sub">You know every card in this set.</p>
+      <div class="row"><button class="primary" id="quizMe">Take a quiz</button><button class="tbtn" id="restart">Practise again</button></div></div>`;
+  } else {
+    const greek = `<div class="word" lang="el">${esc(c.g)}</div><div class="translit">${esc(c.t)}</div>`;
+    const eng = `<div class="meaning">${esc(c.en)}</div>`;
+    const front = picHtml(c.pic) + (reverse ? eng : greek);
+    const back = reverse ? picHtml(c.pic) + greek : eng + `<div class="translit" lang="el">${esc(c.g)}</div>`;
+    body = `<div class="scene ${stackClass()}"><div class="card ${state.flipped?"flip":""}" id="card">
+        <div class="face"><span class="tag">${lv.name}</span>${reverse?"":`<button class="speak" data-say aria-label="Listen">🔊</button>`}${front}<span class="hint">Tap to flip</span></div>
+        <div class="face b"><span class="tag">${lv.name}</span><button class="speak" data-say aria-label="Listen">🔊</button>${back}</div>
+      </div></div>${deckButtons}`;
+  }
+  app.innerHTML = `<button class="back" id="back">← All levels</button>
+    <h1>${lv.icon} ${lv.name}<span class="cefr">${lv.cefr}</span></h1>
+    <div class="chips">${chips}</div>
+    <div class="tools"><span class="count">${state.queue.length} of ${total} cards left</span>
+      <span><button class="tbtn" id="dir">⇄ ${reverse?"English → Greek":"Greek → English"}</button> <button class="tbtn" id="shuf">🔀 Shuffle</button></span></div>
+    ${deckBar(total)}${body}`;
+  $("#back").onclick = renderHome;
+  app.querySelectorAll(".chip").forEach(b => b.onclick = () => openDeck(lv.id, b.dataset.c));
+  $("#dir").onclick = () => { reverse = !reverse; store.set("reverse",reverse); state.flipped=false; renderDeck(); };
+  $("#shuf").onclick = () => { shuffle(state.queue); state.flipped=false; renderDeck(); };
+  if(!c){
+    $("#restart").onclick = () => { cardsOf(lv.id,state.cat).forEach(x => known.delete(x.id)); saveKnown(); openDeck(lv.id,state.cat); };
+    $("#quizMe").onclick = () => startQuiz(lv.id, "g2e");
+    return;
+  }
+  wireCard(c.g);
+}
+
+// ---------- citizenship exam ----------
+function renderExamHome(){
+  state = {view:"examHome"}; setNav("exam");
+  app.innerHTML = `<h1>${GR_FLAG} Citizenship exam</h1>
+    <p class="sub">Πιστοποιητικό Επάρκειας Γνώσεων για Πολιτογράφηση (Π.Ε.Γ.Π.)</p>
+    <div class="info">
+      <p>Every card comes from the <b>official question bank</b> that the real exam draws from. The question is in Greek, like in the exam; the back of the card shows the answer and an English translation.</p>
+      <p>The written exam has <b>20 questions</b>: 4 geography, 4 culture, 6 history and 6 political institutions. It also has a separate Greek-language part (B1 level) — practise it further down this page.</p>
+      <p>The <b>Past paper: April 2026</b> deck has the questions of the real April 2026 exam that are not in the bank.</p>
+      <p style="color:var(--muted)">Bank version: November 2026. The ministry updates it twice a year, so check <a href="https://exetaseis-ithageneia.ypes.gr/" target="_blank" rel="noopener">exetaseis-ithageneia.ypes.gr</a> before the exam. Questions that need a photo or a map are not included here.</p>
+    </div>
+    <div class="grid">` + EXAM.map(t => {
+      const all = examItems(t.id), k = all.filter(i => known.has(i.id)).length;
+      return `<button class="level acc-blue" data-t="${t.id}">
+        <span class="ic blue">${t.icon}</span>
+        <span style="flex:1"><h3>${t.name} <span lang="el" style="color:var(--muted);font-weight:400;font-size:15px">· ${t.gr}</span></h3><p>${all.length} cards · ${t.inExam ? t.inExam+" questions in the exam" : "from the real exam paper"}</p><div class="bar"><i style="width:${Math.round(k/all.length*100)}%"></i></div></span>
+        <span class="pct">${k}/${all.length}</span></button>`;
+    }).join("") + `</div>
+    <div class="row"><button class="primary" id="mock">📝 Practice exam (20 questions)</button>
+      <button class="tbtn" id="eng">${showEnglish?"Hide":"Show"} English on cards</button></div>
+    <h2>Greek language part <span class="cefr">B1</span></h2>
+    <p class="sub" style="margin-bottom:12px">All official topics of the Greek-language test, in Greek, as in the exam.</p>
+    <div class="grid">` + Object.entries(LANG_KINDS).map(([id, K]) =>
+      `<button class="level acc-green" data-lang="${id}"><span class="ic green">${K.icon}</span>
+        <span style="flex:1"><h3>${K.name} <span lang="el" style="color:var(--muted);font-weight:400;font-size:15px">· ${K.gr}</span></h3><p>${K.count}</p></span></button>`).join("") + `</div>`;
+  app.querySelectorAll("[data-t]").forEach(b => b.onclick = () => openExamDeck(b.dataset.t));
+  app.querySelectorAll("[data-lang]").forEach(b => b.onclick = () => openLang(b.dataset.lang));
+  $("#mock").onclick = () => startQuiz("exam:mock", "exam");
+  $("#eng").onclick = () => { showEnglish = !showEnglish; store.set("showEnglish", showEnglish); renderExamHome(); };
+}
+function openExamDeck(topicId, filter="all"){
+  const items = examItems(topicId).filter(i => filter==="all" || (filter==="tf" ? i.kind==="tf" : i.kind!=="tf"));
+  state = {view:"examDeck", topic:topicId, filter, flipped:false, render:renderExamDeck,
+    total: items.length, queue: shuffle(items.filter(i => !known.has(i.id)))};
+  renderExamDeck();
+}
+function examFront(i){
+  const lead = i.kind==="tf" ? `<div class="hintline">Σωστό ή λάθος; <span>· True or false?</span></div>`
+    : i.hint ? `<div class="hintline">${esc(i.hint[0])} <span>· ${esc(i.hint[1])}</span></div>` : "";
+  return lead + `<div class="qtext" lang="el">${esc(i.q)}</div>`;
+}
+function examBack(i){
+  const cls = i.kind==="tf" ? (i.ok ? "ok" : "no") : "";
+  const ans = i.kind==="tf" ? (i.ok ? "Σωστό ✓" : "Λάθος ✗") : i.a;
+  const en = showEnglish ? `<div class="en">${esc(i.qe)}<br><b>${esc(i.ae)}</b></div>` : "";
+  return `<div class="atext ${cls}" lang="el">${esc(ans)}</div>${en}`;
+}
+function renderExamDeck(){
+  setNav("exam");
+  const t = examTopic(state.topic), i = state.queue[0];
+  const chips = [["all","All"],["q","Questions"],["tf","True / false"]].map(([id,name]) =>
+    `<button class="chip ${id===state.filter?"on":""}" data-f="${id}">${name}</button>`).join("");
+  let body;
+  if(!i){
+    body = `<div class="panel"><div class="big">🎉</div><h2>Μπράβο!</h2><p class="sub">You know every card in this set.</p>
+      <div class="row"><button class="primary" id="quizMe">Quiz on ${t.name}</button><button class="tbtn" id="restart">Practise again</button></div></div>`;
+  } else {
+    body = `<div class="scene ${stackClass()}"><div class="card tall ${state.flipped?"flip":""}" id="card">
+        <div class="face"><span class="tag">${t.gr}</span><button class="speak" data-say="${esc(i.q)}" aria-label="Listen">🔊</button>${examFront(i)}<span class="hint">Tap to see the answer</span></div>
+        <div class="face b"><span class="tag">${t.gr}</span><button class="speak" data-say="${esc(i.kind==="tf"?i.a:i.a)}" aria-label="Listen">🔊</button>${examBack(i)}</div>
+      </div></div>${deckButtons}`;
+  }
+  app.innerHTML = `<button class="back" id="back">← Exam topics</button>
+    <h1>${t.icon} ${t.name} <span lang="el" style="color:var(--muted);font-weight:400;font-size:20px">· ${t.gr}</span></h1>
+    <div class="chips">${chips}</div>
+    <div class="tools"><span class="count">${state.queue.length} of ${state.total} cards left</span>
+      <span><button class="tbtn" id="shuf">🔀 Shuffle</button></span></div>
+    ${deckBar(state.total)}${body}`;
+  $("#back").onclick = renderExamHome;
+  app.querySelectorAll("[data-f]").forEach(b => b.onclick = () => openExamDeck(t.id, b.dataset.f));
+  $("#shuf").onclick = () => { shuffle(state.queue); state.flipped=false; renderExamDeck(); };
+  if(!i){
+    $("#restart").onclick = () => { examItems(t.id).forEach(x => known.delete(x.id)); saveKnown(); openExamDeck(t.id, state.filter); };
+    $("#quizMe").onclick = () => startQuiz("exam:"+t.id, "exam");
+    return;
+  }
+  wireCard(i.q);
+}
+
+// ---------- Greek language part ----------
+// Reading & writing, listening and speaking topics of the official bank (data in language.js, about 1 MB,
+// loaded only when this part is opened).
+const LANG_KINDS = {
+  reading:   {icon:"📖", name:"Reading & writing", gr:"Γραπτός λόγος", count:"100 texts with questions (Parts Α, Β, Γ)"},
+  listening: {icon:"🎧", name:"Listening", gr:"Κατανόηση προφορικού λόγου", count:"50 official recordings with questions"},
+  speaking:  {icon:"🗣️", name:"Speaking", gr:"Παραγωγή προφορικού λόγου", count:"25 photo topics and the introduction questions"}
+};
+let langLoading = null;
+function loadLanguage(){
+  if(typeof LANG !== "undefined") return Promise.resolve();
+  if(!langLoading) langLoading = new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = "language.js";
+    s.onload = resolve;
+    s.onerror = () => { langLoading = null; s.remove(); reject(new Error("language.js not loaded")); };
+    document.head.appendChild(s);
+  });
+  return langLoading;
+}
+let langBest = store.get("langBest", {});
+// **bold** and ⟦underlined⟧ as printed in the paper; \n = new line
+const fmt = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/⟦(.+?)⟧/g, "<u>$1</u>").replace(/\n/g, "<br>");
+const plainText = s => String(s).replace(/\*\*|⟦|⟧/g, "");
+// typed answers are compared without accents, capitals or punctuation (final ς = σ)
+const normGr = s => plainText(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/ς/g, "σ").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
+function answerMatches(typed, official){
+  const t = normGr(typed);
+  if(!t) return false;
+  const a = String(official).replace(/[{}…]/g, "");
+  const forms = [a, a.replace(/\([^)]*\)/g, ""), ...a.split("/"), ...a.split(/\s+ή\s+/)];
+  return forms.some(f => normGr(f) && normGr(f) === t);
+}
+function saveLangBest(key, score, total){
+  const b = langBest[key];
+  if(!b || score > b.s){ langBest[key] = {s:score, t:total}; store.set("langBest", langBest); }
+}
+
+function openLang(kind){
+  setNav("exam");
+  app.innerHTML = `<p class="sub">Loading…</p>`;
+  loadLanguage().then(() => renderLangList(kind), () => {
+    app.innerHTML = `<button class="back" id="back">← Exam</button><div class="note">The language file could not be loaded. Check that language.js is in the same folder as index.html.</div>`;
+    $("#back").onclick = renderExamHome;
+  });
+}
+function renderLangList(kind){
+  state = {view:"langList", kind}; setNav("exam");
+  const K = LANG_KINDS[kind];
+  const row = (key, n, text) => {
+    const b = langBest[key], t = plainText(text);
+    return `<button class="lrow" data-n="${n}" data-s="${esc(normGr(t))}"><span class="no">${n}</span><span class="tt" lang="el">${esc(t.length>120 ? t.slice(0,118)+"…" : t)}${b ? `<small>Best: ${b.s}/${b.t}</small>` : ""}</span></button>`;
+  };
+  let info, rows;
+  if(kind==="reading"){
+    info = `<p>Each topic is a full reading &amp; writing paper from the official bank: a text, <b>Part Α</b> (understanding the text), <b>Part Β</b> (vocabulary and grammar) and <b>Part Γ</b> (you write 80–100 words).</p>
+      <p>Choices are checked as soon as you tap them. For questions where you write the answer, type it and press <b>Show answer</b> to compare with the official key.</p>`;
+    rows = LANG.reading.map(t => row("r:"+t.n, t.n, t.title));
+  } else if(kind==="listening"){
+    info = `<p>Each topic has an official recording: <b>Part Α</b> has 5 multiple-choice questions, <b>Part Β</b> 5 true/false statements. Read the questions, play the recording, then answer.</p>`;
+    rows = LANG.listening.map(t => row("l:"+t.n, t.n, t.A.h));
+  } else {
+    info = `<p>The speaking test starts with a few questions about you. Then you talk about a topic with two photos: describe them, compare, and give your opinion.</p>
+      <p>Each card shows the photos and the question in Greek; turn it over for an English translation. <span style="color:var(--muted)">The translations are ours, not official.</span></p>`;
+    rows = [`<button class="lrow" data-intro><span class="no">👋</span><span class="tt" lang="el">Εισαγωγικές ερωτήσεις γνωριμίας<small style="color:var(--muted);font-weight:400">Introduction questions</small></span></button>`]
+      .concat(LANG.speaking.topics.map(t => row("s:"+t.n, t.n, t.gr[0])));
+  }
+  app.innerHTML = `<button class="back" id="back">← Exam</button>
+    <h1>${K.icon} ${K.name} <span lang="el" style="color:var(--muted);font-weight:400;font-size:20px">· ${K.gr}</span></h1>
+    <div class="info">${info}</div>
+    ${kind==="reading" ? `<input class="search" id="find" lang="el" placeholder="Search a title or type a number…" aria-label="Search topics">` : ""}
+    <div class="lgrid" id="list">${rows.join("")}</div>`;
+  $("#back").onclick = renderExamHome;
+  const open = {reading:renderReading, listening:renderListening, speaking:renderSpeaking}[kind];
+  app.querySelectorAll("[data-n]").forEach(b => b.onclick = () => open(+b.dataset.n));
+  app.querySelector("[data-intro]")?.addEventListener("click", renderSpeakIntro);
+  $("#find")?.addEventListener("input", e => {
+    const q = e.target.value.trim(), f = normGr(q);
+    app.querySelectorAll("#list [data-n]").forEach(b => b.hidden = !!q && b.dataset.n!==q && !b.dataset.s.includes(f));
+  });
+}
+
+// one question of a reading or listening topic
+function langItemHtml(it, id, instr){
+  const num = Array.isArray(it.n) ? it.n[0]+"–"+it.n[it.n.length-1] : it.n;
+  const q = it.q!=null ? `<div class="iq" lang="el"><b class="num">${num}.</b> ${fmt(it.q)}</div>` : "";
+  if(it.t==="tf"){
+    const opts = ["Σ","Λ"].concat(/Δ\s*[\/.]?\s*Α/.test(instr) || it.a==="ΔΑ" ? ["ΔΑ"] : []);
+    return `<div class="item" data-id="${id}">${q}<div class="ibtns">` +
+      opts.map(o => `<button class="ib" data-v="${o}" lang="el">${o==="ΔΑ" ? "Δ/Α" : o}</button>`).join("") + `</div><div class="ifb"></div></div>`;
+  }
+  if(it.t==="mc") return `<div class="item" data-id="${id}">${q}<div class="ibtns col">` +
+    it.o.map((o,k) => `<button class="ib" data-v="${k}" lang="el">${"αβγ"[k]}) ${fmt(o)}</button>`).join("") + `</div><div class="ifb"></div></div>`;
+  if(it.t==="match") return `<div class="item" data-id="${id}"><div class="iq" lang="el"><b class="num">${num}.</b> Παράδειγμα: <b>${esc(it.ex[0])}</b> → <b>${esc(it.ex[1])}</b></div>` +
+    it.L.map(([r,w]) => `<div class="mrow"><span lang="el">${r}) ${esc(w)}</span><select data-r="${r}" lang="el" aria-label="${esc(w)}"><option value="">—</option>` +
+      it.R.map(([l,x]) => `<option value="${l}">${l}) ${esc(x)}</option>`).join("") + `</select><span class="mfb"></span></div>`).join("") + `</div>`;
+  // written answer (or a text with gaps): type it, then compare with the official key
+  const orig = it.t==="gaps" ? `<div class="orig" lang="el"><b>Αρχικό κείμενο:</b> ${fmt(it.orig)}</div>` : "";
+  const field = it.t==="gaps" ? `<textarea class="ans" lang="el" placeholder="Γράψτε τις λέξεις για τα κενά…"></textarea>` : `<input class="ans" lang="el" placeholder="Η απάντησή σας…" aria-label="Your answer">`;
+  return `<div class="item" data-id="${id}">${orig}${q}${field}<div class="row" style="justify-content:flex-start;margin-top:8px"><button class="tbtn" data-show>Show answer</button></div><div class="ifb"></div></div>`;
+}
+// lists the questions of one part, with each instruction above the questions it belongs to
+function langPartHtml(title, items, prefix){
+  let instr = "";
+  return `<h2 class="part" lang="el">${title}</h2>` + items.map((it, k) => {
+    const id = prefix + k;
+    state.items[id] = it;
+    if(it.t==="tf" || it.t==="mc") state.total++;
+    if(it.t==="match") state.total += it.L.length;
+    const head = it.h ? `<p class="instr" lang="el">${fmt(it.h)}</p>` : "";
+    if(it.h) instr = it.h;
+    return head + langItemHtml(it, id, instr);
+  }).join("");
+}
+function langScoreHtml(){
+  const left = state.total - state.answered;
+  return `<span>Score: <b>${state.score}</b> of ${state.answered} answered</span><span>${left ? left+" left" : "Done ✓"}</span>`;
+}
+function wireLangItems(bestKey){
+  const scored = ok => {
+    state.answered++; if(ok) state.score++;
+    $("#score").innerHTML = langScoreHtml();
+    if(state.answered===state.total) saveLangBest(bestKey, state.score, state.total);
+  };
+  app.querySelectorAll(".item[data-id]").forEach(box => {
+    const it = state.items[box.dataset.id], fb = box.querySelector(".ifb");
+    if(it.t==="tf" || it.t==="mc"){
+      box.querySelectorAll(".ib").forEach(b => b.onclick = () => {
+        const right = String(it.a), ok = b.dataset.v===right;
+        box.querySelectorAll(".ib").forEach(x => {
+          x.disabled = true;
+          if(x.dataset.v===right) x.classList.add("right"); else if(x===b) x.classList.add("wrong");
+        });
+        fb.innerHTML = ok ? `<span class="ok">✓ Σωστό</span>`
+          : `<span class="no">✗</span> Σωστή απάντηση: <b lang="el">${it.t==="tf" ? (right==="ΔΑ" ? "Δ/Α" : right) : "αβγ"[it.a]+") "+fmt(it.o[it.a])}</b>`;
+        scored(ok);
+      });
+    } else if(it.t==="match"){
+      box.querySelectorAll("select").forEach(sel => sel.onchange = () => {
+        if(!sel.value) return;
+        const right = it.a[sel.dataset.r], ok = sel.value===right;
+        sel.disabled = true; sel.classList.add(ok ? "right" : "wrong");
+        sel.nextElementSibling.innerHTML = ok ? `<span style="color:var(--green);font-weight:700">✓</span>`
+          : `<span style="color:var(--red);font-weight:700">✗</span> <span lang="el">${right}) ${esc(it.R.find(r => r[0]===right)[1])}</span>`;
+        scored(ok);
+      });
+    } else {
+      const inp = box.querySelector(".ans");
+      box.querySelector("[data-show]").onclick = () => {
+        const ok = it.t==="open" && answerMatches(inp.value, it.a);
+        fb.innerHTML = (ok ? `<span class="ok">✓ Σωστό</span> · ` : "") + `Απάντηση: <b lang="el">${fmt(it.a)}</b>`;
+      };
+    }
+  });
+}
+function langPager(list, n){
+  const i = list.findIndex(t => t.n===n), prev = list[i-1], next = list[i+1];
+  return `<div class="pager">${prev ? `<button class="tbtn" id="prev">← ${prev.n}</button>` : "<span></span>"}${next ? `<button class="tbtn" id="next">${next.n} →</button>` : "<span></span>"}</div>`;
+}
+function wirePager(list, n, open){
+  const i = list.findIndex(t => t.n===n);
+  $("#prev")?.addEventListener("click", () => { open(list[i-1].n); window.scrollTo(0,0); });
+  $("#next")?.addEventListener("click", () => { open(list[i+1].n); window.scrollTo(0,0); });
+}
+
+function renderReading(n){
+  const t = LANG.reading.find(x => x.n===n);
+  state = {view:"reading", n, items:{}, total:0, answered:0, score:0}; setNav("exam");
+  const text = `<div class="reading" lang="el"><h2>${fmt(t.title)}</h2>${t.paras.map(p => `<p>${fmt(p)}</p>`).join("")}${t.source ? `<p class="src">${esc(t.source)}</p>` : ""}</div>`;
+  const parts = langPartHtml("Μέρος Α", t.parts.A, "A") + langPartHtml("Μέρος Β", t.parts.B, "B");
+  const g = t.parts.G;
+  app.innerHTML = `<button class="back" id="back">← Reading topics</button>
+    <h1>📖 Θέμα ${n}</h1>
+    <div class="scorebar" id="score">${langScoreHtml()}</div>
+    ${text}${parts}
+    <h2 class="part" lang="el">Μέρος Γ</h2>
+    <p class="instr" lang="el">${fmt(g.h)}</p>
+    <div class="item"><div class="iq" lang="el">${fmt(g.q)}</div>
+      <textarea class="ans essay" id="essay" lang="el" placeholder="Γράψτε εδώ το κείμενό σας…" aria-label="Your text"></textarea>
+      <div class="ifb" id="wc"></div>
+      <p class="mine">The official key has no model answer for Part Γ. Your text is kept in this browser.</p></div>
+    ${langPager(LANG.reading, n)}`;
+  $("#back").onclick = () => renderLangList("reading");
+  wireLangItems("r:"+n);
+  const essay = $("#essay"), wc = () => {
+    const words = essay.value.trim().split(/\s+/).filter(Boolean).length;
+    $("#wc").innerHTML = words ? `${words} λέξεις <span style="color:var(--muted)">(στόχος: 80–100)</span>` : "";
+  };
+  essay.value = store.get("essay:"+n, "");
+  wc();
+  essay.oninput = () => { store.set("essay:"+n, essay.value); wc(); };
+  wirePager(LANG.reading, n, renderReading);
+}
+
+function renderListening(n){
+  const t = LANG.listening.find(x => x.n===n);
+  state = {view:"listening", n, items:{}, total:0, answered:0, score:0}; setNav("exam");
+  const A = t.A.items.map((it,k) => ({...it, t:"mc", h: k===0 ? t.A.h : ""}));
+  const B = t.B.items.map((it,k) => ({...it, t:"tf", h: k===0 ? t.B.h : ""}));
+  const parts = langPartHtml("Μέρος Α", A, "A") + langPartHtml("Μέρος Β", B, "B");
+  app.innerHTML = `<button class="back" id="back">← Listening topics</button>
+    <h1>🎧 Θέμα ${n}</h1>
+    <audio class="audio" controls preload="none" src="${t.audio}"></audio>
+    <div class="scorebar" id="score">${langScoreHtml()}</div>
+    ${parts}
+    ${langPager(LANG.listening, n)}`;
+  $("#back").onclick = () => renderLangList("listening");
+  wireLangItems("l:"+n);
+  wirePager(LANG.listening, n, renderListening);
+}
+
+function renderSpeakIntro(){
+  state = {view:"speakIntro"}; setNav("exam");
+  app.innerHTML = `<button class="back" id="back">← Speaking topics</button>
+    <h1>👋 Εισαγωγικές ερωτήσεις</h1>
+    <p class="sub">The speaking test starts with questions like these. Practise a short answer to each one.</p>
+    <div class="lgrid">` + LANG.speaking.intro.map((q,k) =>
+      `<div class="item"><div class="iq" lang="el" style="font-size:18px;margin-bottom:6px"><b class="num">${k+1}.</b> ${esc(q.gr)}
+        <button class="tbtn" data-say="${k}" aria-label="Listen" style="margin-left:6px">🔊</button></div>
+        <details><summary style="color:var(--muted);cursor:pointer">English</summary><p style="margin:6px 0 0">${esc(q.en)}</p></details></div>`).join("") + `</div>
+    <p class="mine">English translations: ours, not official.</p>`;
+  $("#back").onclick = () => renderLangList("speaking");
+  app.querySelectorAll("[data-say]").forEach(b => b.onclick = () => speak(LANG.speaking.intro[+b.dataset.say].gr, true));
+}
+
+function renderSpeaking(n, back=false){
+  const t = LANG.speaking.topics.find(x => x.n===n);
+  state = {view:"speaking", n}; setNav("exam");
+  const side = back
+    ? `<div class="prompt en">${t.en.map(p => `<p>${esc(p)}</p>`).join("")}</div><p class="mine">English translation: ours, not official.</p>`
+    : `<div class="prompt" lang="el">${t.gr.map(p => `<p>${esc(p)}</p>`).join("")}</div>`;
+  app.innerHTML = `<button class="back" id="back">← Speaking topics</button>
+    <h1>🗣️ Θέμα ${n}</h1>
+    <div class="photos">${t.img.map((src,k) => `<img src="${src}" alt="Photo ${k+1} of topic ${n}" loading="lazy">`).join("")}</div>
+    <div class="qcard" style="text-align:left;padding:44px 20px 20px">
+      <span class="tag">${back ? "English" : "Ελληνικά"}</span>
+      ${back ? "" : `<button class="speak" id="say" aria-label="Listen">🔊</button>`}
+      ${side}
+      <div class="row" style="justify-content:flex-start"><button class="primary" id="turn">⇄ ${back ? "Back to Greek" : "Turn over: English"}</button></div>
+    </div>
+    ${langPager(LANG.speaking.topics, n)}`;
+  $("#back").onclick = () => renderLangList("speaking");
+  $("#say")?.addEventListener("click", () => speak(t.gr.join(" "), true));
+  $("#turn").onclick = () => renderSpeaking(n, !back);
+  wirePager(LANG.speaking.topics, n, renderSpeaking);
+}
+
+// ---------- alphabet ----------
+function renderAlphabet(sel=0){
+  state = {view:"alphabet"}; setNav("alphabet");
+  const L = ALPHABET[sel];
+  app.innerHTML = `<h1>The Greek alphabet</h1>
+    <p class="sub">24 letters. Tap a letter to hear it and see an example word.</p>
+    <div class="detail">
+      <div class="gl" lang="el">${L[0]} ${L[1]}</div>
+      <div style="flex:1">
+        <p><b lang="el">${L[2]}</b> <span class="translit">(${L[3]})</span></p>
+        <p>Sounds like: <b>${esc(L[4])}</b></p>
+        <p class="ex">${L[8]} <span lang="el">${L[5]}</span> <span class="translit">${L[6]}</span> = ${L[7]}</p>
+        <div class="row" style="justify-content:flex-start">
+          <button class="tbtn" id="sayName">🔊 Letter</button><button class="tbtn" id="sayEx">🔊 Word</button>
+        </div>
+      </div>
+    </div>
+    <div class="letters">` + ALPHABET.map((a,i) =>
+      `<button class="letter ${i===sel?"on":""}" data-i="${i}"><div class="gl" lang="el">${a[0]}${a[1].split(" ")[0]}</div><small>${a[3]}</small></button>`).join("") + `</div>
+    <h2>Letter pairs with one sound</h2>
+    <p class="sub">Greek often uses two letters for one sound. Learn these and you can read almost any word.</p>
+    <table><tr><th>Pair</th><th>Sound</th><th>Example</th></tr>` + COMBOS.map(c =>
+      `<tr><td class="gl" lang="el">${c[0]}</td><td>${esc(c[1])}</td><td><span lang="el">${c[2]}</span> <span class="translit">${c[3]}</span> = ${c[4]}</td></tr>`).join("") + `</table>
+    <div class="row"><button class="primary" id="aQuiz">Quiz me on the letters</button></div>`;
+  app.querySelectorAll(".letter").forEach(b => b.onclick = () => { renderAlphabet(+b.dataset.i); speak(ALPHABET[+b.dataset.i][2]); });
+  $("#sayName").onclick = () => speak(L[2]);
+  $("#sayEx").onclick = () => speak(L[5]);
+  $("#aQuiz").onclick = () => startQuiz("alphabet", "g2e");
+}
+
+// ---------- quiz ----------
+// Every quiz question has the same shape:
+// {prompt, say, choices:[{label, ok}], greekChoices, feedback, missed}
+const QUIZ_SOURCES = [
+  ...LEVELS.map(l => ({id:l.id, name:`${l.icon} ${l.name}`, tag:l.cefr})),
+  {id:"alphabet", name:"Αα Alphabet", tag:""},
+  ...EXAM.map(t => ({id:"exam:"+t.id, name:`${t.icon} Exam: ${t.name}`, tag:"Π.Ε.Γ.Π."})),
+  {id:"exam:mock", name:"📝 Practice exam", tag:"20 questions"}
+];
+const QUIZ_TYPES = [
+  {id:"g2e", name:"Greek → English", desc:"See the Greek, pick the meaning"},
+  {id:"e2g", name:"English → Greek", desc:"See the meaning, pick the Greek"},
+  {id:"listen", name:"🔊 Listening", desc:"Hear the word, pick the meaning"}
+];
+let quizPick = store.get("quizPick", {src:"beginner", type:"g2e"});
+if(!QUIZ_SOURCES.find(s => s.id===quizPick.src)) quizPick = {src:"beginner", type:"g2e"};
+const isExamSrc = src => src.startsWith("exam:");
+const bestKey = (src, type) => src + "/" + (isExamSrc(src) ? "exam" : type);
+
+function renderQuizSetup(){
+  state = {view:"quizSetup"}; setNav("quiz");
+  const exam = isExamSrc(quizPick.src);
+  const types = quizPick.src==="alphabet" ? QUIZ_TYPES.slice(0,2) : QUIZ_TYPES;
+  if(!exam && !types.find(t => t.id===quizPick.type)) quizPick.type = "g2e";
+  const bestText = s => { const b = best[bestKey(s.id, quizPick.type)]; return b!=null ? `Best: ${b}` : "Not tried yet"; };
+  app.innerHTML = `<h1>Quiz</h1><p class="sub">Pick what to practise.</p>
+    <h2>What?</h2><div class="pick" id="src">` + QUIZ_SOURCES.map(s =>
+      `<button data-v="${s.id}" class="${s.id===quizPick.src?"on":""}"><b>${s.name}</b><span>${s.tag?s.tag+" · ":""}${bestText(s)}</span></button>`).join("") + `</div>
+    ${exam ? `<div class="info" style="margin-top:14px">Exam questions are asked in Greek with the official answer choices, like the real exam. You see the English translation after you answer.${quizPick.src==="exam:mock" ? " The practice exam has the same mix as the real one: 4 geography, 4 culture, 6 history, 6 institutions." : ""}</div>`
+      : `<h2>How?</h2><div class="pick" id="type">` + types.map(t =>
+      `<button data-v="${t.id}" class="${t.id===quizPick.type?"on":""}"><b>${t.name}</b><span>${t.desc}</span></button>`).join("") + `</div>`}
+    <div class="row"><button class="primary" id="start">Start quiz</button></div>`;
+  app.querySelectorAll("#src button").forEach(b => b.onclick = () => { quizPick.src=b.dataset.v; store.set("quizPick",quizPick); renderQuizSetup(); });
+  app.querySelectorAll("#type button").forEach(b => b.onclick = () => { quizPick.type=b.dataset.v; store.set("quizPick",quizPick); renderQuizSetup(); });
+  $("#start").onclick = () => startQuiz(quizPick.src, quizPick.type);
+}
+
+// vocabulary and alphabet questions
+function vocabItems(src){
+  if(src==="alphabet") return ALPHABET.map(a => ({id:"abc:"+a[0], pic:"", g:a[0]+" "+a[1].split(" ")[0], say:a[2], t:"", en:a[3]}));
+  return cardsOf(src);
+}
+function vocabQuestions(src, type){
+  const pool = vocabItems(src);
+  return shuffle([...pool]).slice(0,10).map(ans => {
+    // wrong options: prefer the same category so the choices are not too easy
+    const same = shuffle(pool.filter(p => p.id!==ans.id && p.cat===ans.cat && p.en!==ans.en));
+    const rest = shuffle(pool.filter(p => p.id!==ans.id && p.cat!==ans.cat && p.en!==ans.en));
+    const wrong = [];
+    for(const p of [...same, ...rest]){ if(wrong.length===3) break; if(!wrong.some(w => w.en===p.en)) wrong.push(p); }
+    const say = ans.say || ans.g;
+    let prompt;
+    if(type==="g2e") prompt = picHtml(ans.pic) + `<div class="word" lang="el">${esc(ans.g)}</div>`;
+    else if(type==="e2g") prompt = picHtml(ans.pic) + `<div class="meaning">${esc(ans.en)}</div>`;
+    else prompt = `<button class="primary" id="play" style="font-size:22px;padding:18px 28px">🔊 Play</button><p class="sub" style="margin:12px 0 0">Listen and pick the meaning</p>`;
+    const line = `${ans.pic&&isEmoji(ans.pic)?ans.pic+" ":""}<span lang="el">${esc(ans.g)}</span> ${ans.t?`<span class="translit">(${esc(ans.t)})</span>`:""} = ${esc(ans.en)}`;
+    return {
+      prompt, say, autoplay: type==="listen", speakAfter: type!=="listen", speakBtn: type==="g2e",
+      greekChoices: type==="e2g",
+      choices: shuffle([ans, ...wrong]).map(o => ({label: type==="e2g" ? o.g : o.en, ok: o.id===ans.id})),
+      feedback: line, missed: line
+    };
+  });
+}
+
+// exam questions
+function examQuestion(i){
+  let labels;
+  if(i.kind==="tf") labels = ["Σωστό","Λάθος"];
+  else labels = shuffle([i.a, ...shuffle([...i.wrong]).slice(0,3)]);
+  const ansText = i.kind==="tf" ? i.a : i.a;
+  const en = `<div class="en" style="margin:8px auto 0">${esc(i.qe)} — <b>${esc(i.ae)}</b></div>`;
+  return {
+    prompt: examFront(i), say: i.q, speakBtn: true, greekChoices: true,
+    choices: labels.map(l => ({label:l, ok: l===ansText})),
+    feedback: `<span lang="el"><b>${esc(ansText)}</b></span>${en}`,
+    missed: `<span lang="el">${esc(i.q)} → <b>${esc(ansText)}</b></span><br><span style="color:var(--muted)">${esc(i.qe)} — ${esc(i.ae)}</span>`
+  };
+}
+function examQuestions(src){
+  const quizzable = items => items.filter(i => i.kind!=="f" && (i.kind==="tf" || i.wrong.length>0));
+  if(src==="exam:mock"){
+    // same order and mix as the real paper
+    return ["geography","culture","history","institutions"].flatMap(id =>
+      shuffle(quizzable(examItems(id))).slice(0, examTopic(id).inExam)).map(examQuestion);
+  }
+  return shuffle(quizzable(examItems(src.slice(5)))).slice(0,10).map(examQuestion);
+}
+
+function startQuiz(src, type){
+  quizPick = {src, type}; store.set("quizPick", quizPick);
+  const qs = isExamSrc(src) ? examQuestions(src) : vocabQuestions(src, type);
+  state = {view:"quiz", src, type, qs, i:0, score:0, answered:false, missed:[]};
+  renderQuestion();
+}
+function renderQuestion(){
+  setNav("quiz");
+  const {qs, i} = state, q = qs[i];
+  const long = q.choices.some(c => c.label.length > 34);
+  app.innerHTML = `<button class="back" id="quit">← Quit quiz</button>
+    ${q.autoplay && !greekVoice ? `<div class="note">No Greek voice was found on this device, so the listening quiz may sound wrong. Try Greek → English instead.</div>` : ""}
+    <div class="tools"><span class="count">Question ${i+1} of ${qs.length}</span><span class="count">Score: ${state.score}</span></div>
+    <div class="progress"><i style="width:${i/qs.length*100}%"></i></div>
+    <div class="qcard">${q.speakBtn ? `<button class="speak" id="sayQ" aria-label="Listen">🔊</button>` : ""}${q.prompt}</div>
+    <div class="opts ${long?"one":""}">` + q.choices.map((c,k) =>
+      `<button class="opt ${q.greekChoices?"gr":""}" data-k="${k}" ${q.greekChoices?'lang="el"':""}>${esc(c.label)}</button>`).join("") + `</div>
+    <div class="row" id="nextRow"></div>`;
+  $("#quit").onclick = renderQuizSetup;
+  $("#play")?.addEventListener("click", () => speak(q.say));
+  $("#sayQ")?.addEventListener("click", () => speak(q.say));
+  if(q.autoplay) setTimeout(() => speak(q.say), 250);
+  app.querySelectorAll(".opt").forEach(b => b.onclick = () => answer(+b.dataset.k));
+}
+function answer(k){
+  if(state.answered) return;
+  state.answered = true;
+  const q = state.qs[state.i], ok = q.choices[k].ok;
+  if(ok) state.score++; else state.missed.push(q.missed);
+  app.querySelectorAll(".opt").forEach((b,j) => {
+    b.disabled = true;
+    if(q.choices[j].ok) b.classList.add("right");
+    else if(j===k) b.classList.add("wrong");
+  });
+  if(q.speakAfter) speak(q.say);
+  const last = state.i===state.qs.length-1;
+  $("#nextRow").innerHTML = `<p class="feedback"><b>${ok?"✓ Correct!":"✗ Not quite"}</b> — ${q.feedback}</p>
+    <button class="primary" id="next">${last?"See results":"Next →"}</button>`;
+  $("#next").onclick = next;
+  $("#next").focus();
+}
+function next(){
+  state.answered = false;
+  if(++state.i < state.qs.length) return renderQuestion();
+  const key = bestKey(state.src, state.type), n = state.qs.length, s = state.score;
+  const isBest = best[key]==null || s > best[key];
+  if(isBest){ best[key] = s; store.set("best", best); }
+  const emoji = s===n ? "🏆" : s>=n*.7 ? "🎉" : s>=n*.4 ? "👍" : "💪";
+  app.innerHTML = `<div class="panel"><div class="big">${emoji}</div><h2>${s} / ${n}</h2>
+    <p class="sub">${isBest?"New best score!":`Your best: ${best[key]}/${n}`}</p>
+    ${state.missed.length ? `<div class="missed"><b>To practise:</b><ul>` + state.missed.map(m => `<li>${m}</li>`).join("") + `</ul></div>` : ""}
+    <div class="row"><button class="primary" id="again">Try again</button><button class="tbtn" id="other">Other quiz</button></div></div>`;
+  $("#again").onclick = () => startQuiz(state.src, state.type);
+  $("#other").onclick = renderQuizSetup;
+}
+
+// ---------- keyboard ----------
+document.addEventListener("keydown", e => {
+  if(state.view==="deck" || state.view==="examDeck") cardKeys(e);
+  else if(state.view==="quiz" && !state.answered){
+    const n = +e.key;
+    if(n>=1 && n<=state.qs[state.i].choices.length) answer(n-1);
+  }
+});
+
+renderHome();
+</script>
+</body>
+</html>
