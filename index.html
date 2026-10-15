@@ -287,9 +287,14 @@ h1 .flag{width:36px;height:24px;margin-right:4px}
   <div class="meander" aria-hidden="true"></div>
   <main id="app"></main>
   <footer><div class="meander" aria-hidden="true"></div>Your progress is saved in this browser. Audio uses your device's Greek voice (the listening topics use the official recordings).<br>
-    Exam cards and the Greek-language topics are based on the official question bank of the Hellenic Ministry of Interior (General Secretariat for Citizenship), November 2026 version, and its April 2026 exam paper.</footer>
+    Exam cards and the Greek-language topics are based on the official question bank of the Hellenic Ministry of Interior (General Secretariat for Citizenship), November 2026 version, and its April 2026 exam paper.<br>
+    Visits are counted with GoatCounter: no cookies, nothing that identifies you.</footer>
 </div>
 
+<!-- Visitor counting with GoatCounter (same account as digstraightthrough.github.io): no cookies, no personal data;
+     our own copy of their script. Only the page path is sent, never the part after "?". -->
+<script>window.goatcounter = { path: function () { return location.pathname || "/"; } };</script>
+<script data-goatcounter="https://digstraightthrough.goatcounter.com/count" async src="vendor/goatcounter/count.js"></script>
 <script src="data.js"></script>
 <script src="exam.js"></script>
 <script>
@@ -361,7 +366,14 @@ function speak(text, whole=false){
 }
 
 // ---------- navigation ----------
+// Anonymous action counts in GoatCounter: only fixed names starting with "gf-" (Greek Flashcards),
+// so they stay apart from the other site's events. Does nothing if the counter isn't loaded.
+function track(name){
+  try { if(window.goatcounter && window.goatcounter.count) window.goatcounter.count({path:"gf-"+name, title:"Greek Flashcards: "+name, event:true}); }
+  catch(e){ /* counting must never break the site */ }
+}
 function go(view){
+  track("section-"+view);
   if("speechSynthesis" in window) speechSynthesis.cancel();
   ({home:renderHome, exam:renderExamHome, alphabet:renderAlphabet, quiz:renderQuizSetup})[view]();
   window.scrollTo(0,0);
@@ -397,7 +409,7 @@ function renderHome(){
       <button class="level acc-orange" data-go2="quiz"><span class="ic orange">🏆</span><span><h3>Quiz</h3><p>Test yourself in 10–20 questions</p></span></button>
     </div>
     <div class="row"><button class="tbtn" id="reset">Reset all progress</button></div>`;
-  app.querySelectorAll("[data-lv]").forEach(b => b.onclick = () => openDeck(b.dataset.lv));
+  app.querySelectorAll("[data-lv]").forEach(b => b.onclick = () => { track("level-"+b.dataset.lv); openDeck(b.dataset.lv); });
   app.querySelectorAll("[data-go2]").forEach(b => b.onclick = () => go(b.dataset.go2));
   $("#reset").onclick = () => { if(confirm("Reset all progress and quiz scores?")){ known.clear(); best={}; saveKnown(); store.set("best",{}); renderHome(); } };
 }
@@ -519,9 +531,9 @@ function renderExamHome(){
     <div class="grid">` + Object.entries(LANG_KINDS).map(([id, K]) =>
       `<button class="level acc-green" data-lang="${id}"><span class="ic green">${K.icon}</span>
         <span style="flex:1"><h3>${K.name} <span lang="el" style="color:var(--muted);font-weight:400;font-size:15px">· ${K.gr}</span></h3><p>${K.count}</p></span></button>`).join("") + `</div>`;
-  app.querySelectorAll("[data-t]").forEach(b => b.onclick = () => openExamDeck(b.dataset.t));
-  app.querySelectorAll("[data-lang]").forEach(b => b.onclick = () => openLang(b.dataset.lang));
-  $("#mock").onclick = () => startQuiz("exam:mock", "exam");
+  app.querySelectorAll("[data-t]").forEach(b => b.onclick = () => { track("exam-"+b.dataset.t); openExamDeck(b.dataset.t); });
+  app.querySelectorAll("[data-lang]").forEach(b => b.onclick = () => { track("lang-"+b.dataset.lang); openLang(b.dataset.lang); });
+  $("#mock").onclick = () => { track("practice-exam"); startQuiz("exam:mock", "exam"); };
   $("#eng").onclick = () => { showEnglish = !showEnglish; store.set("showEnglish", showEnglish); renderExamHome(); };
 }
 function openExamDeck(topicId, filter="all"){
@@ -884,7 +896,7 @@ function renderQuizSetup(){
     <div class="row"><button class="primary" id="start">Start quiz</button></div>`;
   app.querySelectorAll("#src button").forEach(b => b.onclick = () => { quizPick.src=b.dataset.v; store.set("quizPick",quizPick); renderQuizSetup(); });
   app.querySelectorAll("#type button").forEach(b => b.onclick = () => { quizPick.type=b.dataset.v; store.set("quizPick",quizPick); renderQuizSetup(); });
-  $("#start").onclick = () => startQuiz(quizPick.src, quizPick.type);
+  $("#start").onclick = () => { track(quizPick.src==="exam:mock" ? "practice-exam" : "quiz-"+quizPick.src.replace("exam:","exam-")); startQuiz(quizPick.src, quizPick.type); };
 }
 
 // vocabulary and alphabet questions
