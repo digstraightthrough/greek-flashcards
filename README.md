@@ -1,13 +1,6 @@
-# Greek Flashcards
+# Greek Flashcards has moved
 
-Learn Greek with flashcards: picture cards for beginners, B1–B2 vocabulary, the Greek alphabet,
-quizzes, and practice for the Greek citizenship exam (Π.Ε.Γ.Π.).
+The site now lives at **https://greek-flashcards.github.io/**
+(code: https://github.com/Greek-Flashcards/greek-flashcards.github.io).
 
-**Website:** https://digstraightthrough.github.io/greek-flashcards/
-
-The exam cards and the Greek-language topics are based on the official question bank of the
-Hellenic Ministry of Interior (General Secretariat for Citizenship), available free at
-https://exetaseis-ithageneia.ypes.gr/. Reading texts, recordings and photos in the language
-section belong to their original owners, as credited in each topic.
-
-Plain HTML and JavaScript, no build step: open `index.html` in a browser.
+This old address only forwards visitors to the new one, taking their saved progress along.
