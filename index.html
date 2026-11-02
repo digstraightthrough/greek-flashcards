@@ -7,6 +7,12 @@
 <meta name="description" content="Learn Greek with flashcards: picture cards for beginners, B1–B2 vocabulary, the Greek alphabet, quizzes and the official Greek citizenship exam (Π.Ε.Γ.Π.) questions.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Noto+Serif:wght@600&display=swap" rel="stylesheet">
+<!-- phone app: name, icon and colours -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d5eaf">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="Greek Cards">
 <style>
 :root{
   --bg:#f6f4ef; --surface:#fff; --text:#1d2433; --muted:#667085; --line:#e4e1d8;
@@ -298,6 +304,8 @@ h1 .flag{width:36px;height:24px;margin-right:4px}
 <script src="data.js"></script>
 <script src="exam.js"></script>
 <script>
+// This site saves progress under plain names ("known", "best", ...). Other sites at the same web address
+// (digstraightthrough.github.io) share this browser storage, so they use their own prefix (Flemish: "fl:").
 const store = {
   get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
@@ -347,6 +355,16 @@ function examItems(topicId){
   return items;
 }
 const allExamItems = () => EXAM.flatMap(t => examItems(t.id));
+
+// "Reset all progress" removes only this site's cards and scores. Before November 2026 the Flemish site
+// also saved into "known"; its cards stay there until it moves them to its own list, so leave them alone.
+function resetMyProgress(){
+  const mine = new Set([...LEVELS.flatMap(l => cardsOf(l.id).map(c => c.id)), ...allExamItems().map(i => i.id)]);
+  known = new Set([...known].filter(id => !mine.has(id)));
+  saveKnown();
+  for(const k of Object.keys(best)) if(!k.startsWith("flemish/")) delete best[k];
+  store.set("best", best);
+}
 
 // ---------- speech ----------
 let greekVoice = null;
@@ -408,10 +426,12 @@ function renderHome(){
       <button class="level acc-blue" data-go2="alphabet"><span class="ic blue">Αα</span><span><h3>Alphabet</h3><p>All 24 letters with sounds</p></span></button>
       <button class="level acc-orange" data-go2="quiz"><span class="ic orange">🏆</span><span><h3>Quiz</h3><p>Test yourself in 10–20 questions</p></span></button>
     </div>
-    <div class="row"><button class="tbtn" id="reset">Reset all progress</button></div>`;
+    <div class="row">${runningAsApp() ? "" : `<button class="tbtn" id="install">📲 Use as a phone app</button>`}<button class="tbtn" id="reset">Reset all progress</button></div>
+    <div class="info" id="howto" hidden style="margin-top:12px"></div>`;
+  $("#install")?.addEventListener("click", installApp);
   app.querySelectorAll("[data-lv]").forEach(b => b.onclick = () => { track("level-"+b.dataset.lv); openDeck(b.dataset.lv); });
   app.querySelectorAll("[data-go2]").forEach(b => b.onclick = () => go(b.dataset.go2));
-  $("#reset").onclick = () => { if(confirm("Reset all progress and quiz scores?")){ known.clear(); best={}; saveKnown(); store.set("best",{}); renderHome(); } };
+  $("#reset").onclick = () => { if(confirm("Reset all progress and quiz scores?")){ resetMyProgress(); renderHome(); } };
 }
 
 // ---------- shared deck logic ----------
@@ -1015,6 +1035,27 @@ document.addEventListener("keydown", e => {
     if(n>=1 && n<=state.qs[state.i].choices.length) answer(n-1);
   }
 });
+
+// ---------- phone app ----------
+// offline helper: only on the real website (https) or a local test server, not when opened as a file
+if("serviceWorker" in navigator && (location.protocol === "https:" || ["localhost","127.0.0.1"].includes(location.hostname))){
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(e => console.warn("offline helper:", e)));
+}
+let installPrompt = null;  // Chrome/Android gives us this, so our own button can ask "Install app?"
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); installPrompt = e; });
+window.addEventListener("appinstalled", () => { installPrompt = null; track("app-installed"); });
+const runningAsApp = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const isApple = () => /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+function installApp(){
+  track("install-click");
+  if(installPrompt){ installPrompt.prompt(); installPrompt.userChoice.then(() => { installPrompt = null; }); return; }
+  const box = $("#howto");
+  box.innerHTML = isApple()
+    ? `<p><b>iPhone / iPad:</b> open this page in <b>Safari</b>, tap the Share button <b>⬆</b>, then <b>“Add to Home Screen”</b>.</p>`
+    : `<p><b>Android (Chrome):</b> tap the menu <b>⋮</b> at the top right, then <b>“Install app”</b> or <b>“Add to Home screen”</b>.</p>
+       <p><b>iPhone / iPad:</b> open this page in Safari, tap Share <b>⬆</b>, then <b>“Add to Home Screen”</b>.</p>`;
+  box.hidden = !box.hidden;
+}
 
 renderHome();
 </script>
